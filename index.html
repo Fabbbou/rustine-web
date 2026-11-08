@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>rustine</title>
+
+  <!-- Installable app ("Add to Home Screen"): it opens on this list. -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="rustine">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#000000">
+
+  <style>
+    :root {
+      --bg: #0b0b12;
+      --card: #171724;
+      --card-hover: #22223a;
+      --text: #ececf4;
+      --muted: #9a9ab4;
+      --accent: #ffa500;
+      --line: #2c2c44;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--text); }
+    body {
+      font: 15px/1.5 ui-monospace, Menlo, Consolas, "DejaVu Sans Mono", monospace;
+      /* Clear of the notch and the home bar in the installed app. */
+      padding: calc(env(safe-area-inset-top, 0px) + 24px)
+               calc(env(safe-area-inset-right, 0px) + 16px)
+               calc(env(safe-area-inset-bottom, 0px) + 24px)
+               calc(env(safe-area-inset-left, 0px) + 16px);
+    }
+    main { max-width: 560px; margin: 0 auto; }
+    h1 { margin: 0; font-size: 28px; letter-spacing: 1px; color: var(--accent); }
+    header p { margin: 4px 0 24px; color: var(--muted); }
+    ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+    a {
+      display: grid;
+      gap: 4px;
+      padding: 14px 16px;
+      color: inherit;
+      text-decoration: none;
+      background: var(--card);
+      border: 2px solid var(--line);
+      border-radius: 4px;
+    }
+    a:hover, a:focus-visible { background: var(--card-hover); border-color: var(--accent); outline: none; }
+    a:active { transform: translateY(1px); }
+    strong { font-size: 17px; }
+    span { color: var(--text); opacity: 0.85; }
+    em { font-style: normal; font-size: 13px; color: var(--muted); }
+    em::before { content: "controls: "; color: var(--accent); }
+    footer { margin-top: 24px; font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>rustine</h1>
+      <p>A small 2D pixel-art engine in Rust. Pick a game: the demo, or a tutorial.</p>
+    </header>
+    <ul>
+      <!-- One <li> per game built, written by `cargo xtask web` -->
+      <li><a href="demo_sdl.html"><strong>Demo</strong><span>Everything at once: the blob, walls and crates, a trigger zone, music and sounds, a pause menu.</span><em>Bottom half: stick (or WASD / arrows). Top half or Space: action. Pause button or P: pause. R: restart.</em></a></li>
+<li><a href="t01_sprites.html"><strong>1. Sprites &amp; animation</strong><span>An Aseprite sheet in the world, sprites and animators on entities, the core's animate and draw systems, draw order.</span><em>Tap or Space: splosh once.</em></a></li>
+<li><a href="t02_input.html"><strong>2. Input</strong><span>Raw events forwarded by the engine, held keys, a touch stick, an anchored button, world pixels vs UI pixels.</span><em>Drag in the bottom half or WASD / arrows: move. Corner button or Space: change color.</em></a></li>
+<li><a href="t03_scenes.html"><strong>3. Scenes</strong><span>A title, a play screen and a pause menu as a stack of scenes: per-scene systems, enter / exit / pause / resume hooks, entities scoped to a scene, a curtain transition.</span><em>Title: tap or Space. Playing: top-right buttons or P (pause), R (restart), Esc / back (title). Paused: house button (title), tap elsewhere (resume).</em></a></li>
+<li><a href="t04_collisions.html"><strong>4. Collisions</strong><span>Circle and box colliders, solids and triggers, layers and masks, detection as a system, contacts as events, the debug outlines.</span><em>Drag anywhere (like a trackpad) or WASD / arrows: move the circle.</em></a></li>
+<li><a href="t05_physics.html"><strong>5. Arcade vs rigid physics</strong><span>The same room moved by the core's two physics plugs, one per scene: kinematic push-out and slide, or mass, bounce, friction and impulses.</span><em>Drag anywhere or WASD / arrows: drive into the crates. Top-right button or Space: switch physics. Shake button or R: kick the crates.</em></a></li>
+<li><a href="t06_audio.html"><strong>6. Audio</strong><span>A sound board: sounds in memory or streamed, voices, buses, fades, pan, and variation rolled by the game's own random generator.</span><em>Top zone or Space: a hit, panned where you tap. Bottom zones (or P, W, S): music on / off, duck the music, pause the effects.</em></a></li>
+<li><a href="t07_saves.html"><strong>7. Saves &amp; lifecycle</strong><span>A counter that remembers: a save as a serde struct (JSON), loaded at launch, stored on quit and when the app goes to the background, the on_background / on_foreground hooks.</span><em>Tap or Space: count and change color. R: forget everything. Switch apps or lock the phone, then come back (F7 on desktop).</em></a></li>
+
+    </ul>
+    <footer>Esc / Android back quits a game; the &#8592; list button comes back here.</footer>
+  </main>
+  <script>
+    // Offline support. `navigator.serviceWorker` only exists on HTTPS (and localhost),
+    // so this does nothing on the LAN dev server. Skipped on localhost too, so desktop
+    // dev never runs a stale cached build.
+    var isLocalhost = ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
+    if ("serviceWorker" in navigator && !isLocalhost) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
+</body>
+</html>
